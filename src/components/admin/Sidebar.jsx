@@ -5,6 +5,9 @@ import { FaChartPie, FaUsers, FaTasks, FaCog } from "react-icons/fa";
 const Sidebar = () => {
   const location = useLocation();
 
+  // Check authentication
+  const isAuthenticated = !!localStorage.getItem("token");
+
   // Sidebar menu items with icons
   const menuItems = [
     { path: "/admin/dashboard", label: "Dashboard", icon: <FaChartPie /> },
@@ -13,12 +16,15 @@ const Sidebar = () => {
     { path: "/admin/settings", label: "Settings", icon: <FaCog /> },
   ];
 
+  // Only show Dashboard if not authenticated
+  const visibleMenuItems = isAuthenticated ? menuItems : [menuItems[0]];
+
   return (
     <div className="w-64 min-h-screen p-6 bg-gray-900 text-white glassmorphism border-r border-gray-700">
       <h2 className="text-2xl font-extrabold text-center text-gray-100 tracking-wide mb-6">⚙️ Admin Panel</h2>
 
       <ul className="space-y-3">
-        {menuItems.map(({ path, label, icon }) => (
+        {visibleMenuItems.map(({ path, label, icon }) => (
           <li key={path}>
             <Link
               to={path}

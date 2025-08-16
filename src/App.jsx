@@ -100,13 +100,19 @@ function App() {
             
             <main className="flex-grow">
               <Routes>
-                {/* Public Routes */}
-                <Route path="/" element={<Landing />} />
+                {/* Redirect unauthenticated users to Login before Landing */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
-                
+
+                {/* Protected Landing - only show if authenticated */}
+                <Route path="/" element={
+                  <ProtectedRoute>
+                    <Landing />
+                  </ProtectedRoute>
+                } />
+
                 {/* Protected Admin Routes */}
                 <Route 
                   path="/admin/dashboard" 
@@ -164,7 +170,7 @@ function App() {
                     </ProtectedRoute>
                   } 
                 />
-                
+
                 {/* Protected User Routes */}
                 <Route 
                   path="/user/dashboard" 
@@ -214,9 +220,9 @@ function App() {
                     </ProtectedRoute>
                   } 
                 />
-                
-                {/* Fallback Route - Redirect to landing page */}
-                <Route path="*" element={<Navigate to="/" replace />} />
+
+                {/* Fallback Route - Redirect to login */}
+                <Route path="*" element={<Navigate to="/login" replace />} />
               </Routes>
             </main>
             
