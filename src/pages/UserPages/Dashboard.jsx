@@ -11,6 +11,26 @@ import SortableItem from "./SortableItem";
 import notificationSound from "./notification.mp3";
 
 const UserDashboard = () => {
+  // Kanban Board filter state
+  const [kanbanFilter, setKanbanFilter] = useState({ status: 'all', search: '' });
+
+  // Filtered tasks for Kanban Board
+  const getFilteredTasks = (columnKey) => {
+    let columnTasks = tasks[columnKey] || [];
+    // Status filter
+    if (kanbanFilter.status !== 'all') {
+      columnTasks = columnTasks.filter(task => task.status === kanbanFilter.status);
+    }
+    // Search filter
+    if (kanbanFilter.search.trim()) {
+      const searchTerm = kanbanFilter.search.toLowerCase().trim();
+      columnTasks = columnTasks.filter(task =>
+        task.title.toLowerCase().includes(searchTerm) ||
+        (task.description && task.description.toLowerCase().includes(searchTerm))
+      );
+    }
+    return columnTasks;
+  };
   const [tasks, setTasks] = useState({
     "To Do": [],
     "In Progress": [],
@@ -109,10 +129,38 @@ const UserDashboard = () => {
       <UserSidebar />
 
       <div className="flex-1 p-6">
+        {/* Kanban Board Filter UI */}
+        <div className="mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">
+          <div className="flex gap-2 items-center w-full md:w-auto">
+            <label htmlFor="kanban-status" className="font-medium text-gray-700">Status:</label>
+            <select
+              id="kanban-status"
+              className="border rounded px-3 py-2 text-gray-700 focus:ring focus:ring-blue-500"
+              value={kanbanFilter.status}
+              onChange={e => setKanbanFilter(f => ({ ...f, status: e.target.value }))}
+            >
+              <option value="all">All</option>
+              <option value="complete">Complete</option>
+              <option value="incomplete">Incomplete</option>
+            </select>
+          </div>
+          <div className="flex gap-2 items-center w-full md:w-auto">
+            <label htmlFor="kanban-search" className="font-medium text-gray-700">Search:</label>
+            <input
+              id="kanban-search"
+              type="text"
+              className="border rounded px-3 py-2 text-gray-700 focus:ring focus:ring-blue-500"
+              placeholder="Search by title..."
+              value={kanbanFilter.search}
+              onChange={e => setKanbanFilter(f => ({ ...f, search: e.target.value }))}
+            />
+          </div>
+        </div>
         <h2 className="text-4xl font-bold text-gray-900 mb-6 text-center bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
           🚀 User Dashboard
         </h2>
         <ToastContainer position="top-right" autoClose={5000} hideProgressBar />
+
 
         {/* Kanban Board */}
         <div className="glassmorphism p-4 rounded-xl shadow-lg bg-gradient-to-br from-white/30 to-white/10 backdrop-blur-lg border border-white/20">
@@ -120,8 +168,8 @@ const UserDashboard = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {Object.keys(tasks).map((columnKey) => (
                 <Column key={columnKey} title={columnKey} id={columnKey} className="w-[280px]">
-                  <SortableContext items={tasks[columnKey].map((task) => task.id)} strategy={verticalListSortingStrategy}>
-                    {tasks[columnKey].map((task) => (
+                  <SortableContext items={getFilteredTasks(columnKey).map((task) => task.id)} strategy={verticalListSortingStrategy}>
+                    {getFilteredTasks(columnKey).map((task) => (
                       <SortableItem key={task.id} id={task.id} task={task} />
                     ))}
                   </SortableContext>
