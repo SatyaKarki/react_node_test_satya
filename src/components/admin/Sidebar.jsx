@@ -14,6 +14,7 @@ const Sidebar = () => {
     { path: "/admin/manage-users", label: "Manage Users", icon: <FaUsers /> },
     { path: "/admin/manage-tasks", label: "Manage Tasks", icon: <FaTasks /> },
     { path: "/admin/settings", label: "Settings", icon: <FaCog /> },
+    { path: "/admin/user-logs", label: "User Logs", icon: <FaUsers /> },
   ];
 
   // Only show Dashboard if not authenticated
