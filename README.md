@@ -10,10 +10,60 @@ This project is an implementation of the TaskFlow test, a MERN stack task manage
 - **Authentication**: JWT-based authentication
 - **State Management**: React Context API and localStorage
 
-### Prerequisites
+## Prerequisites
 - Node.js v20.14.0
 - NPM v10.7.0
 - MongoDB
+
+## How to Run the Project
+
+### Frontend
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+### Backend
+```bash
+# Navigate to server directory and install dependencies
+cd server
+npm install
+
+# Start development server
+npm run dev
+
+# OR start production server
+npm run start
+```
+
+## Deployment Package Creation
+
+### Frontend Deployment
+1. Build the frontend for production:
+   ```bash
+   npm install
+   npm run build
+   ```
+2. Deploy the `dist` folder to your hosting platform (Vercel, Netlify, etc.)
+3. The project includes `vercel.json` for Vercel deployment
+
+### Backend Deployment
+1. Prepare the backend:
+   ```bash
+   cd server
+   npm install
+   ```
+2. Set environment variables on your hosting platform
+3. Deploy using `npm start` as the start command
+4. Compatible with Heroku, Railway, Render, or any Node.js hosting platform
+
+### Full Stack Deployment
+- Frontend: Deploy to Vercel/Netlify
+- Backend: Deploy to Heroku/Railway/Render
+- Database: Use MongoDB Atlas for cloud database
 
 
 ## Test Problems
